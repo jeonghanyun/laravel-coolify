@@ -2,9 +2,11 @@ version: '3.8'
 
 services:
   app:
-    image: 'ammezie/laravel-coolify:latest'
+    image: 'bitnami/laravel:12'
     volumes:
       - '.:/var/www/html'
+    ports:
+      - '${APP_PORT:-8000}:${APP_INTERNAL_PORT:-8000}'
     environment:
       PHP_FPM_POOL_NAME: "app"
       AUTORUN_ENABLED: '${AUTORUN_ENABLED}'
@@ -52,7 +54,7 @@ services:
       - mysql
 
   worker:
-    image: 'ammezie/laravel-coolify:latest'
+    image: 'bitnami/laravel:12'
     command: ["php", "/var/www/html/artisan", "queue:work", "--tries=3"]
     volumes:
       - '.:/var/www/html'
@@ -110,7 +112,7 @@ services:
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
-      - '3306:3306'
+      - '3307:3306'
     volumes:
       - mysql-data:/var/lib/mysql
 
